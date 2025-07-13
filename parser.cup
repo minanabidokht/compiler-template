@@ -27,8 +27,12 @@ parser code {:
 
 :};
 
+//semantic action: 
+showing the result of Boolean in block action:
+// if((Boolean)parser.stack(-5))
+//  DEBUG: Print the stack content
 //HashMap<String, Integer> tab = new HashMap<String, Integer>();
- //     //  DEBUG: Print the stack content
+ 
     // for (int i = 0; i < 15; i++) {
     //     try {
     //         Object obj = parser.stack(-i);
@@ -37,6 +41,58 @@ parser code {:
     //         break;
     //     }
     // };
+// BOOL_EXP ::=    BOOL_EXP:x AND_WD BOOL_EXP:y  {:RESULT = x && y;:}
+//             |   BOOL_EXP:x OR_WD BOOL_EXP:y  {:RESULT = x||y;:}
+//             |   NOT_WD BOOL_EXP:x {:RESULT = !x;:}
+//             |   OP BOOL_EXP:x CP {:RESULT = x;:}
+//             |   OBJECT_REF:x EQ_WD INUM:y {:
+//             if(x.equals(y)){
+//                 RESULT = true;
+//             }else{
+//                 RESULT = false;
+//             };:}
+//             |   OBJECT_REF:x NEQ_WD INUM:y {:
+//             if(x.equals(y)){
+//                 RESULT = false;
+//             }else{
+//                 RESULT = true;
+//             };:}
+// ;
+// bool_expr ::= bool_expr:x AND bool_expr:y
+//             {:
+//                 RESULT = (x && y);
+//             :}
+//             | bool_expr:x OR bool_expr:y
+//             {:
+//                 RESULT = (x || y);
+//             :}
+//             | NOT bool_expr:x
+//             {:
+//                 RESULT = !x;
+//             :}
+//             | RO bool_expr:x RC
+//             {:
+//                 RESULT = x;
+//             :}
+//             | QSTRING:a DOT QSTRING:b EQEQ UINT:s
+//             {:
+//                 HashMap<String, Integer> tab = (HashMap)parser.table.get(a);
+//                 Integer x = (Integer)tab.get(b);
+//                 if(x.intValue() == s.intValue()) {
+//                     RESULT = true;
+//                 } else {
+//                     RESULT = false;
+//                 }
+//             :}
+// ;
+// OBJECT_REF ::= QSTRING:x DOT QSTRING:y {:
+//how to get all values here and use them in the next semantic action?
+// HashMap<String, Integer> tab = parser.table.get(x);
+// Integer value = tab.get(y);
+// RESULT = value ;
+// :}
+// ;
+
 
 /////////////////////////////
 //// Symbols Delaration
@@ -78,8 +134,12 @@ non terminal prog ;
  //       less = key;
  //   }
 //:}
-System.out.println(mtname + ':' + " less: " + less + " more: " + more);
-:}
+// System.out.println(mtname + ':' + " less: " + less + " more: " + more);
+// :}
+//This function returns the maximum value between the listed <exp>
+//exp2 ::= exp:ex {:RESULT = ex; :}
+// | exp2:pex COMMA exp:ex {: if(ex > pex){ RESULT = ex; }else { RESULT = pex; } :}
+// ;
 /////////////////////////////
 //// Grammar
 ////////////////////////////
@@ -89,10 +149,24 @@ start with prog;
 prog ::= HEADER SEP SECTION1 SEP SECTION2
 ;
 
-EXPR ::=    EXPR:x STAR EXPR:y {:RESULT = x * y;:}
-        |   EXPR:x SL EXPR:y {:RESULT = x / y;:}
-        |   EXPR:x DASH EXPR:y {:RESULT = x - y;:}
-        |   EXPR:x PLUS EXPR:y {:RESULT = x + y;:}
-        |   OP EXPR:x CP {:RESULT = x;:}
-        |   REAL_NUM:x {:RESULT = x;:}
-;
+// EXPR ::= EXPR:a PLUS EXPR:b
+//         {:
+//             RESULT = a+b;
+//         :} 
+//         | EXPR:a STAR EXPR:b
+//         {:
+//             RESULT = a*b;
+//         :}
+//         | max:a
+//         {:
+//             RESULT = a;
+//         :}
+//         | REAL:a
+//         {:
+//             RESULT = a;
+//         :}
+//         | RO EXPR:a RC
+//         {:
+//             RESULT = a;
+//         :}
+// ;

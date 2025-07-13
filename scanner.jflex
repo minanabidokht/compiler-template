@@ -19,26 +19,32 @@ import java_cup.runtime.*;
 
 nl          = \r | \n | \r\n
 
-comment     = "<*" ~ "*>"
+comment     = "[[+" ~ "+]]"
 
 sep         = (\$\$\$)(\$\$)*
 
 //inum      = [1-9][0-9]*      //integer
-
+// comment = "//".*
 //sinum     = ("-")?[0-9]+      //singed integer
 
 //fnum      = [0-9]+.[0-9]+     //float
 
 //var       = [a-zA-Z_][a-zA-Z0-9_]*     //variable
-
+/*
+uint = 0 | [1-9][0-9]*
+id = [a-zA-Z_][a-zA-Z0-9_]*
+hexnum = [0-9a-fA-F]
+real = ("+"|"-")? ((0\.[0-9]*) | [1-9][0-9]*\.[0-9]* | \.[0-9]+ | [1-9][0-9]\. | 0\.)
+double = (([0-9]+\.[0-9]*) | ([0-9]*\.[0-9]+)) (e|E('+'|'-')?[0-9]+)?
+qstring = \" ~ \"
+all = a | A | b | B | c | C | d | D | e | E | f | F
+ip = ({ipnum}\.){3}{ipnum}
+ipnum = [0-9] | [1-9][0-9] | [1-9][0-9]{2} | 2([0-4][0-9] | 5[0-5])
+*/
 //qstring   = \" ~ \"
-
+//{word}{4,15} //at least 4 repeatation and at most 15
 //// TOKENS ////
-//tokens can be
-//  hours HH:MM:SS
-//  dates YY/MM/DD
-//  binary number
-//  hexadecimal number
+
 //
 // hour = (                                 //HH:MM:SS” between 07:13:24 and 17:37:43
 //     "07:13:" ((2[4-9])|[3-5][0-9])      |
@@ -80,14 +86,14 @@ sep         = (\$\$\$)(\$\$)*
         //30 days Apr, Jun, Sep, Nov
         //31 days Jan, Mar, May, Jul, Aug, Oct, Dec 
 
-hex =    (                      //hexadecimal number is between 3b and aE3
-    ("3"[b-fB-F])   |
-    ([4-9][0-9a-fA-F]) |
-    ([a-fA-f][0-9a-fA-F]) |
-    (([0-9])[0-9a-fA-F][0-9a-fA-F])   |
-    (("a"|"A")([0-9a-dA-D])[0-9a-fA-F])|
-    (("a"|"A")("e"|"E")[0-3])   
-)  
+// hex =    (                      //hexadecimal number is between 3b and aE3
+//     ("3"[b-fB-F])   |
+//     ([4-9][0-9a-fA-F]) |
+//     ([a-fA-f][0-9a-fA-F]) |
+//     (([0-9])[0-9a-fA-F][0-9a-fA-F])   |
+//     (("a"|"A")([0-9a-dA-D])[0-9a-fA-F])|
+//     (("a"|"A")("e"|"E")[0-3])   
+// )  
 
 //token_1   = 
 
